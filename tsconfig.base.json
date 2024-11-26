@@ -15,9 +15,15 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@mu/database": ["libs/database/src/index.ts"],
+      "@mu/database/*": [
+        "libs/database/src/*",
+        "libs/database/src/lib/entities/*"
+      ],
       "@mu/firebase": ["libs/firebase/src/index.ts"],
-      "@mu/redis": ["libs/redis/src/index.ts"]
+      "@mu/redis/*": [
+        "libs/redis/src/index.ts",
+        "libs/redis/src/lib/redis.service.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]
