@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { UserEntity } from './user.entity';
 import { PostEntity } from './post.entity';
 
@@ -21,4 +21,7 @@ export class CommentEntity {
 
     @OneToOne(() => UserEntity, (user: UserEntity) => user.id)
     createdBy!: UserEntity
+
+    @CreateDateColumn()
+    createdAt!: Date;
 }
