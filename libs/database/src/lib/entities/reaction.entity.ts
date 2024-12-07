@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { UserEntity } from './user.entity';
 import { PostEntity } from './post.entity';
 import { ReactionType } from '../enums/reaction-type.enum';
@@ -22,4 +22,7 @@ export class ReactionEntity {
 
     @OneToOne(() => UserEntity, (user: UserEntity) => user.id)
     createdBy!: UserEntity
+
+    @CreateDateColumn()
+    createdAt!: Date;
 }
