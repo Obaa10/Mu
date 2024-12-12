@@ -12,6 +12,7 @@
     "@nestjs/mapped-types": "^2.0.6",
     "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^10.0.2",
+    "@nestjs/swagger": "^8.1.0",
     "@nestjs/typeorm": "^10.0.2",
     "@songkeys/nestjs-redis": "^10.0.0",
     "axios": "^1.6.0",
@@ -23,6 +24,7 @@
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
+    "swagger-ui-express": "^5.0.1",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {
