@@ -1,82 +1,171 @@
-# Mu
+# Mu API - Backend Application with Nx Monorepo and NestJS
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+Welcome to mu API, a backend application showcasing the power of Nx Monorepo combined with NestJS. This project serves as a blueprint for building scalable, modular, and maintainable backend systems. By leveraging the strengths of Nx, we focus on efficient development, code reusability, and seamless scaling of microservices.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+## Why Nx Monorepo?
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/nest?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+Using Nx in a monorepo setup offers several key benefits:
 
-## Finish your CI setup
+1. Centralized Codebase:
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/9xtOIwtuoG)
+   • Manage multiple applications and libraries in a single repository.
+   • Keep all shared libraries (e.g., database, redis) in a libs folder to promote DRY (Don’t Repeat Yourself) principles.
 
+2. Code Sharing and Reusability:
 
-## Run tasks
+   • Shared modules like database configurations, Redis setup, and Firebase utilities are implemented once and reused across all services.
+   • This ensures consistency and reduces duplication.
 
-To run the dev server for your app, use:
+3. Efficient Dependency Graph:
 
-```sh
-npx nx serve mu
+   • Nx automatically analyzes and tracks dependencies between apps and libraries.
+   • It ensures that changes are tested and built only where necessary, saving time during CI/CD processes.
+
+4. Scalability:
+
+   • Adding new applications or services to the system is straightforward.
+   • Each service can be developed, tested, and deployed independently, enabling a microservices-like architecture within a single repo.
+
+5. Developer Productivity:
+
+   • Nx provides powerful generators for scaffolding apps, libraries, and modules.
+   • Integrated task scheduling and caching speed up builds and tests.
+
+## Why NestJS?
+
+The mu API uses NestJS to benefit from:
+
+- Modular Architecture: NestJS encourages modular design, which aligns well with Nx’s monorepo philosophy.
+- Out-of-the-Box Support: Built-in support for TypeScript, dependency injection, and extensibility makes it ideal for building robust APIs.
+- Integrations: Seamless integration with TypeORM, Redis, and other popular libraries simplifies backend development.
+
+# Application Overview
+
+## Features
+
+mu app: Demonstrates a modular API with the following modules:
+
+- Auth Module: Passwordless authentication using OTP (email-based).
+- User Module: User profile management:
+- View and update profiles.
+- Post Module: Users can:
+  - Create posts.
+  - React to posts.
+  - Add comments to posts.
+
+## Project Structure
+
+### Key Directories
+
+```
+├── apps/
+│   └── mu/                     # Main application
+│       ├── src/
+│       │   ├── auth/           # Auth module
+│       │   ├── user/           # User module
+│       │   └── post/           # Post module
+│       └── main.ts             # NestJS application entry point
+├── libs/
+│   └───|── database/           # MySQL TypeORM setup
+│       ├── redis/              # Redis configuration
+│       ├── firebase/           # Firebase utilities
+└── nx.json                     # Nx configuration file
 ```
 
-To create a production bundle:
+## Benefits of This Setup
 
-```sh
-npx nx build mu
+1. Ease of Adding New Services:
+
+   • Generate a new NestJS application:
+
+   ```
+   nx generate @nrwl/nest:application <app-name>
+   ```
+
+   • Integrate shared libraries:
+
+   ```
+   import { DatabaseModule } from '@libs/database';
+   ```
+
+2. Cross-Service Communication:
+   - Shared libraries like ``@libs/redis`` facilitate inter-service communication.
+3. Testing Efficiency:
+   - Nx ensures that only affected services and libraries are tested, reducing overhead.
+4. Future-Proof Design:
+   - Add more services (e.g., notifications, analytics) without altering the existing codebase significantly.
+
+## Setup Instructions
+
+### Installation
+
+1. Clone the repository:
+   ```
+   git clone <repository-url>
+   cd mu-backend
+   ```
+2. Install dependencies:
+
+   ```
+   npm install
+   ```
+
+3. Configure environment variables:
+   • Copy .env.example to .env:
+
+   ```
+   cp .env.example .env
+   ```
+
+   • Update database, Redis, and other configurations.
+
+4. Run database migrations:
+
+   ```
+   nx run mu:migrate
+   ```
+
+5. Start the development server:
+
+   ```
+   nx serve mu
+   ```
+
+6. Access API documentation:
+    Swagger is available at http://localhost:3000/api/docs.
+
+## Adding New Applications or Libraries
+
+### Adding an Application
+
+Generate a new NestJS service:
+
+```
+nx generate @nrwl/nest:application <app-name>
 ```
 
-To see all available targets to run for a project, run:
+### Adding a Shared Library
 
-```sh
-npx nx show project mu
+Create a reusable library:
+
+```
+nx generate @nrwl/workspace:library <lib-name>
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+For example, to add a notification library:
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-Use the plugin's generator to create new projects.
-
-To generate a new application, use:
-
-```sh
-npx nx g @nx/nest:app demo
+```
+nx generate @nrwl/workspace:library notification
 ```
 
-To generate a new library, use:
+Export shared logic via the library:
 
-```sh
-npx nx g @nx/node:lib mylib
+```
+export * from './notification.service';
 ```
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+## Conclusion
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+This project demonstrates how Nx Monorepo and NestJS can be combined to build robust, modular, and scalable backend systems. By leveraging shared libraries, efficient dependency management, and the extensibility of Nx, we can create a future-proof architecture for microservices and beyond.
 
-
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Install Nx Console
-
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
-
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Useful links
-
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/nx-api/nest?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+For questions or contributions, feel free to reach out.
